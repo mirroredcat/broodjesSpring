@@ -11,11 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.doReturn;
 
 @SpringBootTest
 public class FileSessionRepositoryTest {
@@ -44,7 +42,23 @@ public class FileSessionRepositoryTest {
             mock.when(()->LocalDate.now()).thenReturn(currentLocalDate);
             assertThrows(SessionNotFoundException.class,()->sessionRepository.findSessionsOfToday());
         }
+    }
 
+    @Test
+    public void sessionHasTeacherTest() throws SessionNotFoundException {
+        LocalDate currentLocalDate = LocalDate.of(2022,10,29);
+        try (MockedStatic<LocalDate> mock = Mockito.mockStatic(LocalDate.class, Mockito.CALLS_REAL_METHODS)){
+            mock.when(()->LocalDate.now()).thenReturn(currentLocalDate);
+            assertEquals("Floor", sessionRepository.findSessionsOfToday().get(0).getTeacher().getFirstName());
+        }
+    }
+    @Test
+    public void sessionHasListOfStudentsTest() throws SessionNotFoundException {
+        LocalDate currentLocalDate = LocalDate.of(2022,10,29);
+        try (MockedStatic<LocalDate> mock = Mockito.mockStatic(LocalDate.class, Mockito.CALLS_REAL_METHODS)){
+            mock.when(()->LocalDate.now()).thenReturn(currentLocalDate);
+            assertEquals(4, sessionRepository.findSessionsOfToday().get(0).getStudentList().size());
+        }
     }
 
 

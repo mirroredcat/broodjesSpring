@@ -24,7 +24,6 @@ public class FileStudentRepository implements StudentRepository {
 
     }
 
-
     public FileStudentRepository() {
 
     }
@@ -49,7 +48,7 @@ public class FileStudentRepository implements StudentRepository {
     public Student findStudent(String firstName, String lastName) throws PersonNotFoundException {
         Student foundStudent = allStudents.stream()
                 .filter(p -> p.getFirstName().equals(firstName) && p.getLastName().equals(lastName))
-                .findFirst().orElseThrow(() -> new PersonNotFoundException("Student " + firstName +" not found or email does not match."));
+                .findFirst().orElseThrow(() -> new PersonNotFoundException("Student " + firstName + "" + "not was not found"));
         return foundStudent;
     }
 
