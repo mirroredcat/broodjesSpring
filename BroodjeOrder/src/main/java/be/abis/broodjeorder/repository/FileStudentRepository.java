@@ -5,6 +5,7 @@ import be.abis.broodjeorder.model.Person;
 import be.abis.broodjeorder.model.Student;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -17,11 +18,20 @@ import java.util.stream.Collectors;
 public class FileStudentRepository implements be.abis.broodjeorder.repository.StudentRepository {
 
     private List<Student> allStudents  = new ArrayList<>();
-    private String fileLocation = "students.csv";
+    private String fileLocation = "/temp/broodjes/students.csv";
+
+    @PostConstruct
+    public void init() {
+        this.readFile();
+
+    }
 
 
     public FileStudentRepository() {
 
+    }
+
+    public void readFile() {
         List<String> lines = null;
         try {
             lines = Files.readAllLines(Paths.get(fileLocation));
@@ -78,7 +88,8 @@ public class FileStudentRepository implements be.abis.broodjeorder.repository.St
         }
         return null;
     }
-
-
-
+    @Override
+    public List<Student> findAllStudents() {
+        return allStudents;
+    }
 }

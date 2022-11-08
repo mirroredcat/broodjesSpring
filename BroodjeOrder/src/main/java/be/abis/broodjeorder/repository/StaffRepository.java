@@ -5,12 +5,13 @@ import be.abis.broodjeorder.model.Manager;
 import be.abis.broodjeorder.model.Person;
 import be.abis.broodjeorder.model.Teacher;
 
+import java.util.List;
+
 public interface StaffRepository {
 
-     Person findPerson(String firstName, String lastName) throws PersonNotFoundException;
-     Person findPersonById(int id) throws PersonNotFoundException;
+
+     Person findTeacherByName(String firstName, String lastName) throws PersonNotFoundException;
+     Teacher findTeacherById(int id) throws PersonNotFoundException;
      Teacher convertToTeacherObj(String attr);
-     Manager convertToManagerObj(String attr);
-
-
+     List<Person> getAllStaff();
 }

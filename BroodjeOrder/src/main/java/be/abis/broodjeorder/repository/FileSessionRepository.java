@@ -2,22 +2,26 @@ package be.abis.broodjeorder.repository;
 
 import be.abis.broodjeorder.exceptions.CourseNotFoundException;
 import be.abis.broodjeorder.exceptions.PersonNotFoundException;
+import be.abis.broodjeorder.exceptions.SessionNotFoundException;
 import be.abis.broodjeorder.model.*;
-import jdk.javadoc.internal.doclets.formats.html.DeprecatedListWriter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.ClientInfoStatus;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
+@ConditionalOnBean(value = CourseRepository.class)
 public class FileSessionRepository implements SessionRepository {
 
     @Autowired
@@ -26,14 +30,20 @@ public class FileSessionRepository implements SessionRepository {
     @Autowired
     StudentRepository studentRepository;
 
-    @Autowired
-    StaffRepository staffRepository;
 
     private List<Session> sessionList = new ArrayList<>();
-    private String fileLocation = "sessions.csv";
+    private String fileLocation = "/temp/broodjes/sessions.csv";
+
+    @PostConstruct
+    public void init() throws CourseNotFoundException {
+        this.readFile();
+    }
 
 
-    public FileSessionRepository() throws CourseNotFoundException, PersonNotFoundException {
+    public FileSessionRepository() {
+    }
+
+    public void readFile() throws CourseNotFoundException {
 
         List<String> lines = null;
         try {
@@ -48,10 +58,10 @@ public class FileSessionRepository implements SessionRepository {
             if (!vals[0].equals("")) {
                 Session session = new Session();
                 session.setId(!vals[0].equals("null") ? Integer.valueOf(vals[0]) : null);
-                session.setCourseName(!vals[1].equals("null") ? courseRepository.findCourseByID(Integer.parseInt(vals[1])) : null);
-                session.setTeacher(!vals[2].equals("null") ? (Teacher) staffRepository.findPersonById(Integer.parseInt(vals[2])) : null);
-                session.setStudentList(!vals[3].equals("null") ? studentRepository.findStudentsByIds(Integer.parseInt(vals[3])) : null);
-                session.setDates(!vals[4].equals("null") ? convertToDatesListObj(vals[4]) : null);
+                session.setCourse(!vals[2].equals("null") ? courseRepository.findCourseByID(Integer.parseInt(vals[2])) : null);
+                session.setTeacher(!vals[2].equals("null") ? courseRepository.findCourseByID(Integer.parseInt(vals[2])).getTeacher() : null);
+                session.setStudentList(!vals[3].equals("null") ? studentRepository.findStudentsByIds(stringToIntegerArray(vals[3])) : null);
+                session.setDates(!vals[1].equals("null") ? convertToDatesListObj(vals[1]) : null);
                 sessionList.add(session);
             }
         }
@@ -59,14 +69,46 @@ public class FileSessionRepository implements SessionRepository {
 
     public List<LocalDate> convertToDatesListObj(String attr) {
         String[] vals = attr.split(",");
-        DateTimeFormatter dtm = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+       // SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        DateTimeFormatter dtm = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         List<LocalDate> dateList = new ArrayList<>();
         for (String d : vals) {
-            dateList.add(LocalDate.parse(d,dtm));
+            dateList.add(LocalDate.parse(d, dtm));
         }
 
         return dateList;
     }
+
+    @Override
+    public List<Session> findAllSessions() {
+        return this.sessionList;
+    }
+
+    @Override
+    public List<Session> findSessionsOfToday() throws SessionNotFoundException {
+        List<Session> foundSessions = sessionList.stream()
+                .filter(session -> session.getDates().contains(LocalDate.now()))
+                .collect(Collectors.toList());
+
+        if (foundSessions.isEmpty()) {
+            throw new SessionNotFoundException("No sessions found");
+        }
+
+        return foundSessions;
+    }
+
+    int[] stringToIntegerArray(String integerLine) {
+        String[] vals = integerLine.split(",");
+        int size = vals.length;
+        int[] arr = new int[size];
+        for (int i=0; i<size;i++) {
+           // System.out.println(vals[i]);
+            arr[i] = Integer.parseInt(vals[i]);
+        }
+        return arr;
+    }
+
+
 
 
 

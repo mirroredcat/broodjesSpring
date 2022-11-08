@@ -6,7 +6,7 @@ import java.util.List;
 public class Session {
 
     private int id;
-    private Course courseName;
+    private Course course;
     private Teacher teacher;
     private List<Student> studentList;
     private List<LocalDate> dates;
@@ -15,9 +15,9 @@ public class Session {
     public Session() {
     }
 
-    public Session(int id, Course courseName, Teacher teacher, List<Student> studentList, List<LocalDate> dates) {
+    public Session(int id, Course course, Teacher teacher, List<Student> studentList, List<LocalDate> dates) {
         this.id = id;
-        this.courseName = courseName;
+        this.course = course;
         this.teacher = teacher;
         this.studentList = studentList;
         this.dates = dates;
@@ -32,12 +32,12 @@ public class Session {
         this.id = id;
     }
 
-    public Course getCourseName() {
-        return courseName;
+    public Course getCourse() {
+        return course;
     }
 
-    public void setCourseName(Course courseName) {
-        this.courseName = courseName;
+    public void setCourse(Course course) {
+        this.course = course;
     }
 
     public Teacher getTeacher() {

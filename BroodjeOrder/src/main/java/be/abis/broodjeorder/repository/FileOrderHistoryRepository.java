@@ -16,13 +16,6 @@ public class FileOrderHistoryRepository implements OrderHistoryRepository{
     private String fileLocation = "orderhistory.csv";
 
     public FileOrderHistoryRepository() {
-        List<String> lines = null;
-        try {
-            lines = Files.readAllLines(Paths.get(fileLocation));
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
 

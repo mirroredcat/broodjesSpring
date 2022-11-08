@@ -5,8 +5,10 @@ import be.abis.broodjeorder.model.Person;
 import be.abis.broodjeorder.model.Sandwich;
 import be.abis.broodjeorder.model.SandwichCompany;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.PostConstruct;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -22,10 +24,23 @@ import java.util.stream.Collectors;
 @Repository
 public class FileSandwichRepository implements SandwichRepository{
 
-    private List<Sandwich> sandwichList = new ArrayList<>();
-    private static final String fileLoc = "sandwiches.csv";
+    private List<Sandwich> sandwichList;
+
+   // @Value("/temp/broodjes/sandwiches.csv")
+    private static final String fileLoc = "/temp/broodjes/sandwiches.csv";
+
+    @PostConstruct
+    public void init() {
+        this.readFile();
+
+    }
 
     public FileSandwichRepository() {
+        sandwichList = new ArrayList<>();
+
+    }
+
+    public void readFile(){
 
         List<String> stringLines = null;
         try {
