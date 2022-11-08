@@ -22,7 +22,7 @@ public class FileCourseRepository implements CourseRepository{
     StaffRepository staffRepository;
 
     private List<Course> allCourses = new ArrayList<>();
-   // @Value("courses.csv")
+
     private String fileLocation = "/temp/broodjes/courses.csv";
 
     @PostConstruct

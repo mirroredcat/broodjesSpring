@@ -16,7 +16,7 @@ import java.util.List;
 public class FileStaffRepository implements StaffRepository{
 
     private List<Person> allStaff  = new ArrayList<>();
-    //@Value("/temp/broodjes/staff.csv")
+
     private String fileLocation = "/temp/broodjes/staff.csv";
 
     @PostConstruct

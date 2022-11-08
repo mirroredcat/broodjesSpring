@@ -1,7 +1,6 @@
 package be.abis.broodjeorder.repository;
 
 import be.abis.broodjeorder.exceptions.PersonNotFoundException;
-import be.abis.broodjeorder.model.Person;
 import be.abis.broodjeorder.model.Student;
 import org.springframework.stereotype.Repository;
 
@@ -10,12 +9,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
-public class FileStudentRepository implements be.abis.broodjeorder.repository.StudentRepository {
+public class FileStudentRepository implements StudentRepository {
 
     private List<Student> allStudents  = new ArrayList<>();
     private String fileLocation = "/temp/broodjes/students.csv";

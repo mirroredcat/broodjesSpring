@@ -26,7 +26,6 @@ public class FileSandwichRepository implements SandwichRepository{
 
     private List<Sandwich> sandwichList;
 
-   // @Value("/temp/broodjes/sandwiches.csv")
     private static final String fileLoc = "/temp/broodjes/sandwiches.csv";
 
     @PostConstruct

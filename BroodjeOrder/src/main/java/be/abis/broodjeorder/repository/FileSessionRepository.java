@@ -12,8 +12,6 @@ import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -69,7 +67,6 @@ public class FileSessionRepository implements SessionRepository {
 
     public List<LocalDate> convertToDatesListObj(String attr) {
         String[] vals = attr.split(",");
-       // SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
         DateTimeFormatter dtm = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         List<LocalDate> dateList = new ArrayList<>();
         for (String d : vals) {
@@ -102,7 +99,6 @@ public class FileSessionRepository implements SessionRepository {
         int size = vals.length;
         int[] arr = new int[size];
         for (int i=0; i<size;i++) {
-           // System.out.println(vals[i]);
             arr[i] = Integer.parseInt(vals[i]);
         }
         return arr;
