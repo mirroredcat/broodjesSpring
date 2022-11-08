@@ -1,6 +1,7 @@
 package be.abis.broodjeorder.model;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class DayOrder {
@@ -15,6 +16,7 @@ public class DayOrder {
         this.orderList = orderList;
         this.dayMenu = dayMenu;
     }
+
 
     public LocalDate getDate() {
         return date;
@@ -46,5 +48,16 @@ public class DayOrder {
 
     public void setDayTotal(double dayTotal) {
         this.dayTotal = dayTotal;
+    }
+
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        sb.append(getDate().format(dtf)).append(" ").append(getOrderList().size())
+                .append(" orders from ").append(getDayMenu().getSandwichCompany().getCompanyName())
+                .append(getDayTotal());
+
+        return sb.toString();
     }
 }

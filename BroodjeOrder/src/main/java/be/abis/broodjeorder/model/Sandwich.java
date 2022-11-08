@@ -58,7 +58,7 @@ public class Sandwich {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -69,6 +69,12 @@ public class Sandwich {
     public void setIngredients(String ingredients) {
         this.ingredients = ingredients;
     }
+
+    @Override
+    public String toString(){
+        return (this.sandwichName + " " + this.category +" "+   (this.ingredients==null? "": ("\n" + this.ingredients)) );
+    }
+
 }
 
 
