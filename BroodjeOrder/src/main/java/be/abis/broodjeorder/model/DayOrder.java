@@ -10,6 +10,9 @@ public class DayOrder {
     private Menu dayMenu;
     private double dayTotal = 0.0;
 
+    public DayOrder() {
+    }
+
     public DayOrder(LocalDate date, List<Order> orderList, Menu dayMenu) {
         this.date = date;
         this.orderList = orderList;
