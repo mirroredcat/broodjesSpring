@@ -1,6 +1,7 @@
 package be.abis.broodjeorder;
 
 import be.abis.broodjeorder.exceptions.DayOrderNotFoundException;
+import be.abis.broodjeorder.exceptions.OrderAlreadyRegisteredException;
 import be.abis.broodjeorder.model.SandwichCompany;
 import be.abis.broodjeorder.model.StoredDayOrder;
 import be.abis.broodjeorder.service.OrderHistoryService;
@@ -39,48 +40,55 @@ public class OrderHistoryServiceTest {
 
     @Test
     @Order(1)
-    public void addOrderTest() throws IOException {
+    public void addOrderTest() throws IOException, OrderAlreadyRegisteredException {
         orderHistoryService.addDayOrder(storedDayOrder);
         assertEquals(1, orderHistoryService.getAllStoredOrders().size());
     }
 
     @Test
     @Order(2)
+    public void addOrderThatAlreadyExistsShouldThrowExceptionTest() {
+        assertThrows(OrderAlreadyRegisteredException.class, ()->orderHistoryService.addDayOrder(storedDayOrder));
+    }
+
+    @Test
+    @Order(3)
     public void findOrderByIDTest() throws DayOrderNotFoundException {
         assertEquals("Vleugels", orderHistoryService.findDayOrderByID(1).getSandwichCompany().getCompanyName());
     }
 
     @Test
-    @Order(3)
+    @Order(4)
     public void findOrderByIDThrowsExceptionTest() {
         assertThrows(DayOrderNotFoundException.class, ()-> orderHistoryService.findDayOrderByID(99));
     }
 
     @Test
-    @Order(4)
+    @Order(5)
     public void findOrderByDateTest() throws DayOrderNotFoundException {
         assertEquals(1, orderHistoryService.findDayOrderByDate(LocalDate.now()).getId());
     }
 
     @Test
-    @Order(5)
+    @Order(6)
     public void findOrderByDateThrowsExceptionTest() {
         assertThrows(DayOrderNotFoundException.class, ()-> orderHistoryService.findDayOrderByDate(LocalDate.of(3023,9,21)));
     }
 
     @Test
-    @Order(6)
+    @Order(7)
     public void findOrderBySessionIDTest() throws DayOrderNotFoundException {
         assertEquals("Vleugels", orderHistoryService.getAllOrdersBySessionByID(1).get(0).getSandwichCompany().getCompanyName());
     }
 
     @Test
-    public void findOrdeBySessionIDThrowsExceptionTest() {
+    @Order(8)
+    public void findOrderBySessionIDThrowsExceptionTest() {
         assertThrows(DayOrderNotFoundException.class,()->orderHistoryService.getAllOrdersBySessionByID(999));
     }
 
     @Test
-    @Order(6)
+    @Order(9)
     public void deleteDayOrderTest() throws IOException {
         int listSize = orderHistoryService.getAllStoredOrders().size();
         orderHistoryService.deleteDayOrder(storedDayOrder);

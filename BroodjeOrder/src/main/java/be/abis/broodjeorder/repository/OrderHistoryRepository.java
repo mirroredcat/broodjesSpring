@@ -1,6 +1,7 @@
 package be.abis.broodjeorder.repository;
 
 import be.abis.broodjeorder.exceptions.DayOrderNotFoundException;
+import be.abis.broodjeorder.exceptions.OrderAlreadyRegisteredException;
 import be.abis.broodjeorder.model.StoredDayOrder;
 import be.abis.broodjeorder.model.Student;
 
@@ -10,7 +11,7 @@ import java.util.List;
 
 public interface OrderHistoryRepository {
 
-    void addDayOrder(StoredDayOrder storedDayOrder) throws IOException;
+    void addDayOrder(StoredDayOrder storedDayOrder) throws IOException, OrderAlreadyRegisteredException;
 
     void deleteDayOrder(StoredDayOrder storedDayOrder) throws IOException;
 

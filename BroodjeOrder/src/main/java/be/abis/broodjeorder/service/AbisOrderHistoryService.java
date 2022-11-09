@@ -1,6 +1,7 @@
 package be.abis.broodjeorder.service;
 
 import be.abis.broodjeorder.exceptions.DayOrderNotFoundException;
+import be.abis.broodjeorder.exceptions.OrderAlreadyRegisteredException;
 import be.abis.broodjeorder.exceptions.SessionNotFoundException;
 import be.abis.broodjeorder.model.StoredDayOrder;
 import be.abis.broodjeorder.repository.OrderHistoryRepository;
@@ -23,7 +24,7 @@ public class AbisOrderHistoryService implements OrderHistoryService{
     }
 
     @Override
-    public void addDayOrder(StoredDayOrder storedDayOrder) throws IOException {
+    public void addDayOrder(StoredDayOrder storedDayOrder) throws IOException, OrderAlreadyRegisteredException {
         orderHistoryRepository.addDayOrder(storedDayOrder);
     }
     @Override

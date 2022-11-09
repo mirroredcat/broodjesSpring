@@ -1,6 +1,8 @@
 package be.abis.broodjeorder.repository;
 
 import be.abis.broodjeorder.exceptions.DayOrderNotFoundException;
+import be.abis.broodjeorder.exceptions.OrderAlreadyRegisteredException;
+import be.abis.broodjeorder.model.Person;
 import be.abis.broodjeorder.model.SandwichCompany;
 import be.abis.broodjeorder.model.StoredDayOrder;
 import org.springframework.stereotype.Repository;
@@ -14,6 +16,7 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Repository
@@ -49,9 +52,21 @@ public class FileOrderHistoryRepository implements OrderHistoryRepository{
 
 
     @Override
-    public void addDayOrder(StoredDayOrder storedDayOrder) throws IOException {
-        dayOrderHistoryList.add(storedDayOrder);
-        this.writeToFile();
+    public void addDayOrder(StoredDayOrder storedDayOrder) throws IOException, OrderAlreadyRegisteredException {
+
+        Iterator<StoredDayOrder> orderHistoryIterator = dayOrderHistoryList.iterator();
+        boolean orderAlreadyRegistered = false;
+        while (orderHistoryIterator.hasNext()) {
+            StoredDayOrder order = orderHistoryIterator.next();
+            if (order.getId()==storedDayOrder.getId() && order.getSessionID()== storedDayOrder.getSessionID()) {
+                orderAlreadyRegistered = true;
+            }
+        } if (orderAlreadyRegistered) {
+            throw new OrderAlreadyRegisteredException("Order already registered");
+        } else {
+            dayOrderHistoryList.add(storedDayOrder);
+            this.writeToFile();
+        }
 
     }
 

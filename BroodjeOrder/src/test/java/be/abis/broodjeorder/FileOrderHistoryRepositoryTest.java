@@ -1,6 +1,7 @@
 package be.abis.broodjeorder;
 
 import be.abis.broodjeorder.exceptions.DayOrderNotFoundException;
+import be.abis.broodjeorder.exceptions.OrderAlreadyRegisteredException;
 import be.abis.broodjeorder.model.SandwichCompany;
 import be.abis.broodjeorder.model.StoredDayOrder;
 import be.abis.broodjeorder.repository.OrderHistoryRepository;
@@ -37,44 +38,49 @@ public class FileOrderHistoryRepositoryTest {
 
     @Test
     @Order(1)
-    public void addDayOrderTest() throws IOException {
+    public void addDayOrderTest() throws IOException, OrderAlreadyRegisteredException {
         orderHistoryRepository.addDayOrder(storedDayOrder);
         assertEquals(1,orderHistoryRepository.getDayOrderHistoryList().size());
-
     }
 
     @Test
     @Order(2)
+    public void addDayOrderThatAlreadyExistsThrowsExceptionTest() {
+        assertThrows(OrderAlreadyRegisteredException.class,()->orderHistoryRepository.addDayOrder(storedDayOrder));
+    }
+
+    @Test
+    @Order(3)
     public void findAllDayStoredDayOrdersTest(){
         assertEquals(1,orderHistoryRepository.getDayOrderHistoryList().size());
     }
 
     @Test
-    @Order(3)
+    @Order(4)
     public void findDayOrderByIDTest() throws DayOrderNotFoundException {
         assertEquals("Vleugels", orderHistoryRepository.findDayOrderByID(1).getSandwichCompany().getCompanyName());
     }
 
     @Test
-    @Order(4)
+    @Order(5)
     public void findDayOrderByIDThrowsExceptionWhenNotFoundTest() {
         assertThrows(DayOrderNotFoundException.class,()->orderHistoryRepository.findDayOrderByID(99));
     }
 
     @Test
-    @Order(5)
+    @Order(6)
     public void findDayOrderByDateTest() throws DayOrderNotFoundException {
         assertEquals(1, orderHistoryRepository.findDayOrderByDate(LocalDate.now()).getId());
     }
 
     @Test
-    @Order(6)
+    @Order(7)
     public void findDayOrderByWrongDateThrowsExceptionTest() {
         assertThrows(DayOrderNotFoundException.class,()->orderHistoryRepository.findDayOrderByDate(LocalDate.of(2023,9,21)));
     }
 
     @Test
-    @Order(7)
+    @Order(8)
     public void deleteStoredOrderTest() throws IOException {
         orderHistoryRepository.deleteDayOrder(storedDayOrder);
         assertEquals(0,orderHistoryRepository.getDayOrderHistoryList().size());
