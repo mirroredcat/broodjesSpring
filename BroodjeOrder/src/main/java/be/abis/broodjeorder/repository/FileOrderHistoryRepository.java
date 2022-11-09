@@ -96,6 +96,7 @@ public class FileOrderHistoryRepository implements OrderHistoryRepository{
                 }
             }
             d.setDayTotal(!vals[4].equals("null") ? Double.valueOf(vals[4]) : null);
+            d.setSessionID(!vals[5].equals("null") ? Integer.valueOf(vals[5]) : null);
         }
         return d;
     }
@@ -122,7 +123,8 @@ public class FileOrderHistoryRepository implements OrderHistoryRepository{
                 .append(storedDayOrder.getDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))).append(";")
                 .append(storedDayOrder.getOrderListSize()).append(";")
                 .append(storedDayOrder.getSandwichCompany().getCompanyName()).append(";")
-                .append(storedDayOrder.getDayTotal());
+                .append(storedDayOrder.getDayTotal())
+                .append(storedDayOrder.getSessionID());
         return sb;
     }
 

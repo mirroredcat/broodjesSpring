@@ -9,6 +9,7 @@ public class StoredDayOrder {
     int orderListSize;
     SandwichCompany sandwichCompany;
     double dayTotal;
+    int sessionID;
 
     public StoredDayOrder() {
     }
@@ -51,5 +52,13 @@ public class StoredDayOrder {
 
     public void setDayTotal(double dayTotal) {
         this.dayTotal = dayTotal;
+    }
+
+    public int getSessionID() {
+        return sessionID;
+    }
+
+    public void setSessionID(int sessionID) {
+        this.sessionID = sessionID;
     }
 }

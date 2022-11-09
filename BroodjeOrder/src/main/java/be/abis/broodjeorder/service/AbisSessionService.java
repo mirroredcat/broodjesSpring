@@ -26,5 +26,6 @@ public class AbisSessionService implements SessionService {
     @Override
     public List<Session> getTodaysSessions() throws SessionNotFoundException {
         return sessionRepository.findSessionsOfToday();
+
     }
 }
